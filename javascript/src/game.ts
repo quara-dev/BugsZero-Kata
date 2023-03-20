@@ -1,8 +1,16 @@
 export class Player {
-    purse: number;
+    private purse: number;
 
     constructor() {
         this.purse = 0;
+    }
+
+    getCoin() {
+        return this.purse;
+    }
+
+    gainCoin() {
+        this.purse++;
     }
 }
 
@@ -10,7 +18,7 @@ export class Game {
 
     rockQuestions: any[];
     isGettingOutOfPenaltyBox: boolean;
-    currentPlayer: number;
+    playerIndex: number;
     sportsQuestions: any[];
     scienceQuestions: any[];
     inPenaltyBox: any[];
@@ -31,7 +39,7 @@ export class Game {
         this.sportsQuestions = new Array();
         this.rockQuestions = new Array();
 
-        this.currentPlayer = 0;
+        this.playerIndex = 0;
         this.isGettingOutOfPenaltyBox = false;
 
         this.player_entities = []
@@ -63,27 +71,27 @@ export class Game {
     };
 
     didPlayerWin() {
-        return !(this.player_entities[this.currentPlayer].purse == 6)
+        return !(this.player_entities[this.playerIndex].getCoin() == 6)
     };
 
     currentCategory() {
-        if (this.places[this.currentPlayer] == 0)
+        if (this.places[this.playerIndex] == 0)
             return 'Pop';
-        if (this.places[this.currentPlayer] == 4)
+        if (this.places[this.playerIndex] == 4)
             return 'Pop';
-        if (this.places[this.currentPlayer] == 8)
+        if (this.places[this.playerIndex] == 8)
             return 'Pop';
-        if (this.places[this.currentPlayer] == 1)
+        if (this.places[this.playerIndex] == 1)
             return 'Science';
-        if (this.places[this.currentPlayer] == 5)
+        if (this.places[this.playerIndex] == 5)
             return 'Science';
-        if (this.places[this.currentPlayer] == 9)
+        if (this.places[this.playerIndex] == 9)
             return 'Science';
-        if (this.places[this.currentPlayer] == 2)
+        if (this.places[this.playerIndex] == 2)
             return 'Sports';
-        if (this.places[this.currentPlayer] == 6)
+        if (this.places[this.playerIndex] == 6)
             return 'Sports';
-        if (this.places[this.currentPlayer] == 10)
+        if (this.places[this.playerIndex] == 10)
             return 'Sports';
         return 'Rock';
     };
@@ -114,17 +122,17 @@ export class Game {
     };
 
     roll(roll) {
-        console.log(this.players[this.currentPlayer] + " is the current player");
+        console.log(this.players[this.playerIndex] + " is the current player");
         console.log("They have rolled a " + roll);
 
-        if (this.inPenaltyBox[this.currentPlayer]) {
+        if (this.inPenaltyBox[this.playerIndex]) {
             if (roll % 2 != 0) {
                 this.isGettingOutOfPenaltyBox = true;
 
-                console.log(this.players[this.currentPlayer] + " is getting out of the penalty box");
+                console.log(this.players[this.playerIndex] + " is getting out of the penalty box");
                 this._movePlayerAndAskQuestion(roll);
             } else {
-                console.log(this.players[this.currentPlayer] + " is not getting out of the penalty box");
+                console.log(this.players[this.playerIndex] + " is not getting out of the penalty box");
                 this.isGettingOutOfPenaltyBox = false;
             }
         } else {
@@ -134,36 +142,36 @@ export class Game {
     };
 
     _movePlayerAndAskQuestion(roll) {
-        this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll;
-        if (this.places[this.currentPlayer] > 11) {
-            this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
+        this.places[this.playerIndex] = this.places[this.playerIndex] + roll;
+        if (this.places[this.playerIndex] > 11) {
+            this.places[this.playerIndex] = this.places[this.playerIndex] - 12;
         }
 
-        console.log(this.players[this.currentPlayer] + "'s new location is " + this.places[this.currentPlayer]);
+        console.log(this.players[this.playerIndex] + "'s new location is " + this.places[this.playerIndex]);
         console.log("The category is " + this.currentCategory());
         this.askQuestion();
     }
 
     wasCorrectlyAnswered() {
-        if (this.inPenaltyBox[this.currentPlayer]) {
+        if (this.inPenaltyBox[this.playerIndex]) {
             if (this.isGettingOutOfPenaltyBox) {
                 console.log('Answer was correct!!!!');
-                this.currentPlayer += 1;
-                if (this.currentPlayer == this.players.length)
-                    this.currentPlayer = 0;
+                this.playerIndex += 1;
+                if (this.playerIndex == this.players.length)
+                    this.playerIndex = 0;
 
-                this.player_entities[this.currentPlayer].purse += 1
+                this.player_entities[this.playerIndex].gainCoin()
                 // this.purses[this.currentPlayer] += 1;
-                console.log(this.players[this.currentPlayer] + " now has " +
-                    this.player_entities[this.currentPlayer].purse + " Gold Coins.");
+                console.log(this.players[this.playerIndex] + " now has " +
+                    this.player_entities[this.playerIndex].getCoin() + " Gold Coins.");
 
                 var winner = this.didPlayerWin();
 
                 return winner;
             } else {
-                this.currentPlayer += 1;
-                if (this.currentPlayer == this.players.length)
-                    this.currentPlayer = 0;
+                this.playerIndex += 1;
+                if (this.playerIndex == this.players.length)
+                    this.playerIndex = 0;
                 return true;
             }
 
@@ -171,12 +179,12 @@ export class Game {
         } else {
             console.log('Answer was correct!!!!');
 
-            this.currentPlayer += 1;
-            if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
-            this.player_entities[this.currentPlayer].purse += 1;
-            console.log(this.players[this.currentPlayer] + " now has " +
-                this.player_entities[this.currentPlayer].purse + " Gold Coins.");
+            this.playerIndex += 1;
+            if (this.playerIndex == this.players.length)
+                this.playerIndex = 0;
+            this.player_entities[this.playerIndex].gainCoin();
+            console.log(this.players[this.playerIndex] + " now has " +
+                this.player_entities[this.playerIndex].getCoin() + " Gold Coins.");
 
             var winner = this.didPlayerWin();
 
@@ -186,12 +194,12 @@ export class Game {
 
     wrongAnswer() {
         console.log('Question was incorrectly answered');
-        console.log(this.players[this.currentPlayer] + " was sent to the penalty box");
-        this.inPenaltyBox[this.currentPlayer] = true;
+        console.log(this.players[this.playerIndex] + " was sent to the penalty box");
+        this.inPenaltyBox[this.playerIndex] = true;
 
-        this.currentPlayer += 1;
-        if (this.currentPlayer == this.players.length)
-            this.currentPlayer = 0;
+        this.playerIndex += 1;
+        if (this.playerIndex == this.players.length)
+            this.playerIndex = 0;
         return true;
     };
 
