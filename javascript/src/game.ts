@@ -63,7 +63,7 @@ export class Game {
     };
 
     didPlayerWin() {
-        return !(this.purses[this.currentPlayer] == 6)
+        return !(this.player_entities[this.currentPlayer].purse == 6)
     };
 
     currentCategory() {
