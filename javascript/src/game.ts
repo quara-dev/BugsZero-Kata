@@ -1,3 +1,11 @@
+export class Player {
+    purse: number;
+
+    constructor() {
+        this.purse = 0;
+    }
+}
+
 export class Game {
 
     rockQuestions: any[];
@@ -10,6 +18,7 @@ export class Game {
     purses: any[];
     places: any[];
     players: any[];
+    player_entities: Player[];
 
     constructor() {
         this.players = new Array();
@@ -25,6 +34,8 @@ export class Game {
         this.currentPlayer = 0;
         this.isGettingOutOfPenaltyBox = false;
 
+        this.player_entities = []
+
         for (let i = 0; i < 50; i++) {
             this.popQuestions.push("Pop Question " + i);
             this.scienceQuestions.push("Science Question " + i);
@@ -37,8 +48,9 @@ export class Game {
     add(playerName) {
         this.players.push(playerName);
         this.places[this.howManyPlayers() - 1] = 0;
-        this.purses[this.howManyPlayers() - 1] = 0;
+        // this.purses[this.howManyPlayers() - 1] = 0;
         this.inPenaltyBox[this.howManyPlayers() - 1] = false;
+        this.player_entities.push(new Player());
 
         console.log(playerName + " was added");
         console.log("They are player number " + this.players.length);
