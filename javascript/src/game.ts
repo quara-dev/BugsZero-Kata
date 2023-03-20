@@ -1,8 +1,10 @@
 export class Player {
     private purse: number;
+    public readonly name: string; 
 
-    constructor() {
+    constructor(name: string) {
         this.purse = 0;
+        name.string = name
     }
 
     getCoin() {
@@ -33,11 +35,7 @@ export class Game {
     }
 
     nextPlayer() {
-        this.playerIndex++
-
-        if (this.playerIndex == this.players.length)
-            this.playerIndex = 0;
-
+        this.playerIndex = (this.playerIndex + 1) % this.players.length 
     }
 
 
@@ -180,9 +178,7 @@ export class Game {
 
                 return winner;
             } else {
-                this.playerIndex += 1;
-                if (this.playerIndex == this.players.length)
-                    this.playerIndex = 0;
+                this.nextPlayer()
                 return true;
             }
 
@@ -206,9 +202,7 @@ export class Game {
         console.log(this.players[this.playerIndex] + " was sent to the penalty box");
         this.inPenaltyBox[this.playerIndex] = true;
 
-        this.playerIndex += 1;
-        if (this.playerIndex == this.players.length)
-            this.playerIndex = 0;
+        this.nextPlayer()
         return true;
     };
 
