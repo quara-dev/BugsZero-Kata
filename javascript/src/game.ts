@@ -48,7 +48,7 @@ export class Game {
     add(playerName) {
         this.players.push(playerName);
         this.places[this.howManyPlayers() - 1] = 0;
-        // this.purses[this.howManyPlayers() - 1] = 0;
+        this.purses[this.howManyPlayers() - 1] = 0;
         this.inPenaltyBox[this.howManyPlayers() - 1] = false;
         this.player_entities.push(new Player());
 
@@ -152,9 +152,10 @@ export class Game {
                 if (this.currentPlayer == this.players.length)
                     this.currentPlayer = 0;
 
-                this.purses[this.currentPlayer] += 1;
+                this.player_entities[this.currentPlayer].purse += 1
+                // this.purses[this.currentPlayer] += 1;
                 console.log(this.players[this.currentPlayer] + " now has " +
-                    this.purses[this.currentPlayer] + " Gold Coins.");
+                    this.player_entities[this.currentPlayer].purse + " Gold Coins.");
 
                 var winner = this.didPlayerWin();
 
@@ -173,9 +174,9 @@ export class Game {
             this.currentPlayer += 1;
             if (this.currentPlayer == this.players.length)
                 this.currentPlayer = 0;
-            this.purses[this.currentPlayer] += 1;
+            this.player_entities[this.currentPlayer].purse += 1;
             console.log(this.players[this.currentPlayer] + " now has " +
-                this.purses[this.currentPlayer] + " Gold Coins.");
+                this.player_entities[this.currentPlayer].purse + " Gold Coins.");
 
             var winner = this.didPlayerWin();
 
