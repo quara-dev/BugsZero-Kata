@@ -4,7 +4,7 @@ export class Player {
 
     constructor(name: string) {
         this.purse = 0;
-        name.string = name
+        this.name  = name;
     }
 
     getCoin() {
@@ -69,7 +69,7 @@ export class Game {
         this.places[this.howManyPlayers() - 1] = 0;
         this.purses[this.howManyPlayers() - 1] = 0;
         this.inPenaltyBox[this.howManyPlayers() - 1] = false;
-        this.player_entities.push(new Player());
+        this.player_entities.push(new Player(playerName));
 
         console.log(playerName + " was added");
         console.log("They are player number " + this.players.length);
@@ -171,7 +171,7 @@ export class Game {
                 
                 this.currentPlayer.gainCoin()
                 // this.purses[this.currentPlayer] += 1;
-                console.log(this.players[this.playerIndex] + " now has " +
+                console.log(this.currentPlayer.name + " now has " +
                     this.currentPlayer.getCoin() + " Gold Coins.");
 
                 var winner = this.didPlayerWin();
