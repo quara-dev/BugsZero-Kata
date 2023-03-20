@@ -28,6 +28,19 @@ export class Game {
     players: any[];
     player_entities: Player[];
 
+    get currentPlayer() {
+        return this.player_entities[this.playerIndex]
+    }
+
+    nextPlayer() {
+        this.playerIndex++
+
+        if (this.playerIndex == this.players.length)
+            this.playerIndex = 0;
+
+    }
+
+
     constructor() {
         this.players = new Array();
         this.places = new Array(6);
@@ -71,7 +84,7 @@ export class Game {
     };
 
     didPlayerWin() {
-        return !(this.player_entities[this.playerIndex].getCoin() == 6)
+        return !(this.currentPlayer.getCoin() == 6)
     };
 
     currentCategory() {
@@ -156,14 +169,12 @@ export class Game {
         if (this.inPenaltyBox[this.playerIndex]) {
             if (this.isGettingOutOfPenaltyBox) {
                 console.log('Answer was correct!!!!');
-                this.playerIndex += 1;
-                if (this.playerIndex == this.players.length)
-                    this.playerIndex = 0;
-
-                this.player_entities[this.playerIndex].gainCoin()
+                this.nextPlayer()
+                
+                this.currentPlayer.gainCoin()
                 // this.purses[this.currentPlayer] += 1;
                 console.log(this.players[this.playerIndex] + " now has " +
-                    this.player_entities[this.playerIndex].getCoin() + " Gold Coins.");
+                    this.currentPlayer.getCoin() + " Gold Coins.");
 
                 var winner = this.didPlayerWin();
 
@@ -179,12 +190,10 @@ export class Game {
         } else {
             console.log('Answer was correct!!!!');
 
-            this.playerIndex += 1;
-            if (this.playerIndex == this.players.length)
-                this.playerIndex = 0;
-            this.player_entities[this.playerIndex].gainCoin();
+            this.nextPlayer()
+            this.currentPlayer.gainCoin();
             console.log(this.players[this.playerIndex] + " now has " +
-                this.player_entities[this.playerIndex].getCoin() + " Gold Coins.");
+                this.currentPlayer.getCoin() + " Gold Coins.");
 
             var winner = this.didPlayerWin();
 
